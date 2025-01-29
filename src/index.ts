@@ -21,7 +21,7 @@ export class CookieConsent {
 
     if (this.hasConsentPref()) {
       return;
-    }
+    } 
     this.createPopup();
   }
 
@@ -129,7 +129,7 @@ export class CookieConsent {
   }
 
   updateConsentPref(consentSettings: Object) {
-    localStorage.setItem("consentGranted", JSON.stringify(consentSettings));
+    localStorage.setItem("consentSettings", JSON.stringify(consentSettings));
     gtag('consent', 'update', consentSettings);
     this.closePopup();
   }

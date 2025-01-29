@@ -78,7 +78,7 @@ class o {
     });
   }
   updateConsentPref(e) {
-    localStorage.setItem("consentGranted", JSON.stringify(e)), gtag("consent", "update", e), this.closePopup();
+    localStorage.setItem("consentSettings", JSON.stringify(e)), gtag("consent", "update", e), this.closePopup();
   }
   closePopup() {
     var e;
