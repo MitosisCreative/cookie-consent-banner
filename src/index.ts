@@ -91,12 +91,12 @@ export class CookieConsent {
     popup.innerHTML = `
       <div class="consent-container-popup">
         <h2 class="">${this.config.heading}</h2>
-        <p class="">${this.config.body}</p>
-        ${policyLinks ? `<p class='policy-links'>${policyLinks}</p>` : ""}
+        <p class="consent-body">${this.config.body}</p>
         <div class="consent-container-buttons">
           <button id="accept-all" class="cookie-button-all">Accept All</button>
           <button id="necessary-only" class="cookie-button-necessary">Only Necessary</button>
         </div>
+        ${policyLinks ? `<div class='policy-links'>${policyLinks}</div>` : ""}
       </div>
     `;
 
