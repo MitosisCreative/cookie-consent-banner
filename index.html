@@ -3,9 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/dist/styles.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
-<body>
+<body style="background:grey">
+  <script type="module">
+        import CookieConsent from './dist/es/index.js';
+        const banner = new CookieConsent({
+          heading: "Your Privacy Matters",
+          body: "We use cookies for personalization and analytics. Choose your preferences:",
+          privacyPolicy: "/privacy-policy.html",
+          cookiePolicy: "/cookie-policy.html"
+        });        
+    </script>
   <h1 class="text-3xl font-bold underline">
     Hello world!
   </h1>

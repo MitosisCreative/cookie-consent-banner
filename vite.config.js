@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import path from "path";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
+  plugins: [cssInjectedByJsPlugin()],
   build: {
     outDir: "dist",
     lib: {
@@ -14,7 +16,7 @@ export default defineConfig({
       external: [], // Avoid bundling dependencies
       output: {
         entryFileNames: "[format]/[name].js", // Separate formats into folders
-        assetFileNames: "[name].[ext]",
+        manualChunks: undefined,
       },
     },
   },

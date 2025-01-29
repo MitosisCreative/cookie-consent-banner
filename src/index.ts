@@ -1,63 +1,142 @@
 import "./style.css";
 
-interface CookieSettings {
-  functional: boolean;
-  analytics: boolean;
-  marketing: boolean;
-}
-
-export function initializeCookieConsentPopup() {
-  const popup = document.createElement("div");
-  popup.id = "cookie-consent-popup";
-  popup.className = "fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50";
-
-  popup.innerHTML = `
-    <div class="popupcookie">
-      <h2 class="text-lg font-bold mb-4">Cookie Preferences</h2>
-      <p class="text-sm text-gray-600 mb-4">We use cookies to enhance your experience. Manage your preferences below:</p>
-      <form id="cookie-consent-form">
-        <label class="flex items-center mb-2">
-          <input type="checkbox" name="functional" class="mr-2"> Functional Cookies
-        </label>
-        <label class="flex items-center mb-2">
-          <input type="checkbox" name="analytics" class="mr-2"> Analytics Cookies
-        </label>
-        <label class="flex items-center mb-2">
-          <input type="checkbox" name="marketing" class="mr-2"> Marketing Cookies
-        </label>
-        <div class="flex justify-end mt-4">
-          <button type="button" id="accept-all" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Accept All</button>
-          <button type="button" id="save-settings" class="bg-blue-500 text-white px-4 py-2 rounded">Save Preferences</button>
-        </div>
-      </form>
-    </div>
-  `;
-
-  document.body.appendChild(popup);
-
-  document.getElementById("accept-all")?.addEventListener("click", () => {
-    setCookieSettings({ functional: true, analytics: true, marketing: true });
-    closePopup();
-  });
-
-  document.getElementById("save-settings")?.addEventListener("click", () => {
-    const form = document.getElementById("cookie-consent-form") as HTMLFormElement;
-    const settings: CookieSettings = {
-      functional: form.functional.checked,
-      analytics: form.analytics.checked,
-      marketing: form.marketing.checked,
+export class CookieConsent {
+  constructor(config) {
+    this.config = {
+      heading: "Cookie Preferences",
+      body: "We use cookies to enhance your experience. Manage your preferences below:",
+      privacyPolicy: null,
+      cookiePolicy: null,
+      gtmid : null,
+      ...config,
     };
-    setCookieSettings(settings);
-    closePopup();
-  });
+
+    this.cookieName = "cookie_consent_status";
+    this.init(); 
+  }
+
+  init() {
+    this.initDataLayer();
+    this.injectGTM();
+
+    if (this.hasConsentPref()) {
+      return;
+    }
+    this.createPopup();
+  }
+
+  initDataLayer() {
+    // Load the GTM Code
+    window.dataLayer = window.dataLayer || [];
+    // dataLayer.push({'gtm.start': new Date().getTime(), 'event': 'gtm.js'});
+    window.gtag = function() {
+        dataLayer.push(arguments);
+    }
+
+    gtag("consent", "default", {
+      analytics_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied"
+    });
+
+    if (this.hasConsentPref()) {
+      this.setConsentPref()
+    }
+    
+  }
+
+  injectGTM() {
+    const gtmScript = document.createElement('script');
+    gtmScript.async = true;
+    gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${this.config.gtmid}`;
+
+    const firstScript = document.getElementsByTagName('script')[0];
+    firstScript.parentNode.insertBefore(gtmScript,firstScript);
+  }
+
+  hasConsentPref() {
+    return localStorage.getItem("consentSettings");
+  }
+
+  setConsentPref() {
+    const pref = JSON.parse(localStorage.getItem("consentSettings"));
+    gtag('consent', 'update', pref);
+  }
+
+  async isUserInAllowedCountry() {
+    try {
+      const response = await fetch("https://ipapi.co/json/");
+      const data = await response.json();
+      return this.config.allowedCountries.includes(data.country_code);
+    } catch (error) {
+      console.error("Error fetching user location:", error);
+      return false;
+    }
+  }
+
+  createPopup() {
+    const popup = document.createElement("div");
+    popup.id = "cookie-consent-popup";
+    popup.className = "consent-container";
+
+    let policyLinks = "";
+    if (this.config.privacyPolicy) {
+      policyLinks += `<a href='${this.config.privacyPolicy}' class=''>Privacy Policy</a> `;
+    }
+    if (this.config.cookiePolicy) {
+      policyLinks += `<a href='${this.config.cookiePolicy}' class=''>Cookie Policy</a>`;
+    }
+
+    popup.innerHTML = `
+      <div class="consent-container-popup">
+        <h2 class="">${this.config.heading}</h2>
+        <p class="">${this.config.body}</p>
+        ${policyLinks ? `<p class='policy-links'>${policyLinks}</p>` : ""}
+        <div class="consent-container-buttons">
+          <button id="accept-all" class="cookie-button-all">Accept All</button>
+          <button id="necessary-only" class="cookie-button-necessary">Only Necessary</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(popup);
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    document.getElementById("accept-all").addEventListener("click", () => {
+      this.updateConsentPref({
+        ad_user_data: "granted",
+        ad_personalization: "granted",
+        ad_storage: "granted",
+        analytics_storage: "granted"
+      });
+    });
+
+    // document.getElementById("save-settings").addEventListener("click", () => {
+    //   this.setCookieSettings({ functional: true, analytics: false, marketing: false });
+    // });
+
+    document.getElementById("necessary-only").addEventListener("click", () => {
+      this.updateConsentPref({
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        ad_storage: "denied",
+        analytics_storage: "denied"
+      });
+    });
+  }
+
+  updateConsentPref(consentSettings: Object) {
+    localStorage.setItem("consentGranted", JSON.stringify(consentSettings));
+    gtag('consent', 'update', consentSettings);
+    this.closePopup();
+  }
+
+  closePopup() {
+    document.getElementById("cookie-consent-popup")?.remove();
+  }
 }
 
-function setCookieSettings(settings: CookieSettings) {
-  console.log("Cookie settings saved:", settings);
-  // TODO: Update GTM data layer here
-}
-
-function closePopup() {
-  const popup = document.getElementById("cookie-consent-popup");
-  popup?.remove();
-}
+export default CookieConsent;
