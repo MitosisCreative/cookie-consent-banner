@@ -1,7 +1,7 @@
 {
   "name": "cookie-consent-popup",
-  "version": "1.0.0",
-  "description": "A simple cookie consent popup for managing Google Tag Manager settings with TailwindCSS styling.",
+  "version": "0.0.1",
+  "description": "A simple cookie consent popup for managing Google Tag Manager settings. Also loads GTM code",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
