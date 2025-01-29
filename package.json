@@ -1,0 +1,34 @@
+{
+  "name": "cookie-consent-popup",
+  "version": "1.0.0",
+  "description": "A simple cookie consent popup for managing Google Tag Manager settings with TailwindCSS styling.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "cookie",
+    "consent",
+    "popup",
+    "google-tag-manager",
+    "tailwindcss"
+  ],
+  "author": "ZM Saunders",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^6",
+    "vite-plugin-css": "^1.0.4"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "classnames": "^2.3.2"
+  }
+}

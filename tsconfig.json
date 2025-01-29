@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                 // Target modern JavaScript
+    "module": "ES6",                 // Use ES module syntax
+    "moduleResolution": "Node",      // Resolve modules like Node.js
+    "outDir": "dist",                // Output files go here
+    "rootDir": "src",                // Source files live here
+    "strict": true,                  // Enable strict type checking
+    "esModuleInterop": true,         // Allow default imports from CommonJS modules
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],           // Include all files in the src directory
+  "exclude": ["node_modules"]        // Exclude dependencies
+}
