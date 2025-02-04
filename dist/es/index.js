@@ -59,7 +59,9 @@ class o {
         </div>
         ${t ? `<div class='policy-links'>${t}</div>` : ""}
       </div>
-    `, document.body.appendChild(e), this.addEventListeners();
+    `, document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", () => {
+      document.body.appendChild(e), this.addEventListeners();
+    }) : (document.body.appendChild(e), this.addEventListeners());
   }
   addEventListeners() {
     document.getElementById("accept-all").addEventListener("click", () => {

@@ -104,9 +104,17 @@ export class CookieConsent {
         ${policyLinks ? `<div class='policy-links'>${policyLinks}</div>` : ""}
       </div>
     `;
-
-    document.body.appendChild(popup);
-    this.addEventListeners();
+    
+    // Ensure we don't write to the body until the dom is ready.
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', () => {
+        document.body.appendChild(popup);
+        this.addEventListeners();
+      });
+    } else { // Go ahead, don't add a listener
+      document.body.appendChild(popup);
+      this.addEventListeners();
+    }
   }
 
   addEventListeners() {

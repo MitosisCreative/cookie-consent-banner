@@ -1,6 +1,6 @@
 {
-  "name": "cookie-consent-popup",
-  "version": "0.0.5",
+  "name": "@zmsaunders/cookie-consent",
+  "version": "0.1.1",
   "description": "A simple cookie consent popup for managing Google Tag Manager settings. Also loads GTM code",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -15,7 +15,8 @@
     "consent",
     "popup",
     "google-tag-manager",
-    "tailwindcss"
+    "tailwindcss",
+    "gdpr"
   ],
   "author": "ZM Saunders",
   "license": "MIT",
@@ -28,8 +29,12 @@
     "vite-plugin-css": "^1.0.4",
     "vite-plugin-css-injected-by-js": "^3.5.2"
   },
-  "dependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
-    "classnames": "^2.3.2"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MitosisCreative/cookie-consent-banner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MitosisCreative/cookie-consent-banner/issues"
+  },
+  "homepage": "https://github.com/MitosisCreative/cookie-consent-banner#readme"
 }

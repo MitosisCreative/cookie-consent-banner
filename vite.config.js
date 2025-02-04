@@ -10,7 +10,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "CookieConsentPopup",
       fileName: "index",
-      formats: ["es", "cjs"], // Generate ES module and CommonJS formats
+      formats: ["es", "cjs", "umd"], // Generate ES module and CommonJS formats
     },
     rollupOptions: {
       external: [], // Avoid bundling dependencies
