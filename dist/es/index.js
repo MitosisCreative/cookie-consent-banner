@@ -22,7 +22,7 @@ class o {
       ad_user_data: "denied",
       ad_personalization: "denied",
       wait_for_update: "500"
-    }), this.hasConsentPref() && this.setConsentPref();
+    }), this.hasConsentPref() && this.setConsentPref(), gtag("js", /* @__PURE__ */ new Date()), gtag("config", this.config.gtmid);
   }
   injectGTM() {
     const e = document.createElement("script");

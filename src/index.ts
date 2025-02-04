@@ -44,6 +44,10 @@ export class CookieConsent {
     if (this.hasConsentPref()) {
       this.setConsentPref()
     }
+
+    // Set GTM
+    gtag('js', new Date());
+    gtag('config', this.config.gtmid);
     
   }
 

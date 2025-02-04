@@ -1,6 +1,6 @@
 {
   "name": "cookie-consent-popup",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A simple cookie consent popup for managing Google Tag Manager settings. Also loads GTM code",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
